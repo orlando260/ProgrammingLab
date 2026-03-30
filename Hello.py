@@ -462,16 +462,20 @@ class CSVTimeSeriesFile():
     def __init__(self,name):
         self.file=name
     def get_data(self):
+        lista=[]
         with open(self.file,'r') as file:
-            lista=[]
+            
             for line in file:
-                line=line.replace("-",",").replace("\n","")
-                a,b,c=line.split(",")
-                lista.append(["{a}-{b}",c])
+                line=line.replace("\n","")
+                a,c=line.split(",")
+                lista.append([a,c])
+        return lista
 
 def compute_variation(time_series,inizio,fine):
     dict8={}
-    for i in range(inizio,fine):
+    for i in range(inizio,fine-1):
+        k=i+1
+        mean=0
         for lista in time_series:
             somma=0
             j=0
@@ -481,7 +485,12 @@ def compute_variation(time_series,inizio,fine):
                 b=int(b.replace("\n",""))
                 somma=somma+b
             mean=somma/j
-            
+        dict8['i']=mean
+        dict88={}
+        dict88['{i}-{k}']= dict8[i]-dict8[i+1]
+    return dict88
+
+        
             
 
                 
